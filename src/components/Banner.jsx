@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import MyImage from "../assets/Backgroud day.jpg";
 
-const TARGET_DATE = new Date("2025-12-27T00:00:00");
+/* ================= TARGET DATE ================= */
+// สิ้นสุดตอนจบวันเกิด
+const TARGET_DATE = new Date("2025-12-27T23:59:59");
 
 const words = ["Lovely", "Sweet", "Happy", "Cute", "Wonderful"];
 
@@ -18,14 +20,20 @@ const Banner = () => {
 
       if (diff <= 0) {
         clearInterval(timer);
+        setTimeLeft({
+          days: "00",
+          hours: "00",
+          minutes: "00",
+          seconds: "00",
+        });
         return;
       }
 
       setTimeLeft({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / (1000 * 60)) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
+        days: String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, "0"),
+        hours: String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, "0"),
+        minutes: String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, "0"),
+        seconds: String(Math.floor((diff / 1000) % 60)).padStart(2, "0"),
       });
     }, 1000);
 
@@ -40,15 +48,15 @@ const Banner = () => {
       setTimeout(() => {
         setIndex((prev) => (prev + 1) % words.length);
         setAnimate(true);
-      }, 300);
+      }, 400);
     }, 2500);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="w-full h-screen relative overflow-hidden">
-      {/* Background */}
+    <section className="relative w-full h-screen overflow-hidden">
+      {/* ================= BACKGROUND ================= */}
       <img
         src={MyImage}
         alt="banner"
@@ -61,25 +69,29 @@ const Banner = () => {
       {/* ================= CONTENT ================= */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 gap-6">
 
-        {/* Countdown */}
-        <div className="bg-white/70 backdrop-blur-sm px-4 py-2 rounded-md font-press text-xs sm:text-sm">
-          {timeLeft.days ?? "00"}d : {timeLeft.hours ?? "00"}h :{" "}
-          {timeLeft.minutes ?? "00"}m : {timeLeft.seconds ?? "00"}s
+        {/* ================= COUNTDOWN ================= */}
+        <div className="bg-white/70 backdrop-blur-sm px-5 py-2 rounded-md font-press text-xs sm:text-sm">
+          {timeLeft.days}d : {timeLeft.hours}h : {timeLeft.minutes}m :{" "}
+          {timeLeft.seconds}s
         </div>
 
-        {/* Animated Text */}
-        <div className="flex items-center gap-3 text-black font-bold leading-none
-                        text-3xl sm:text-5xl md:text-6xl">
+        {/* ================= ANIMATED TEXT ================= */}
+        <div
+          className="
+            flex items-center gap-3 font-bold text-black leading-none
+            text-3xl sm:text-5xl md:text-6xl
+          "
+        >
           <span>Have A</span>
 
-          {/* Fixed width animated word */}
-          <span className="relative h-[1.2em] w-[9ch] overflow-hidden inline-flex justify-center">
+          {/* Fixed-width animated word */}
+          <span className="relative h-[1.2em] w-[10ch] overflow-hidden inline-flex justify-center">
             <span
               className={`
                 absolute left-1/2 -translate-x-1/2
                 text-pink-500
                 transition-all duration-500 ease-out
-                ${animate ? "translate-y-0 opacity-100" : "-translate-y-6 opacity-0"}
+                ${animate ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"}
               `}
             >
               {words[index]}
