@@ -154,7 +154,7 @@ const theoryList = [
     title: "Theory 02 — 90Days",
     background: background90Days,
     color: "black",
-    titleColor: "text-pink-200",
+    titleColor: "text-black",
     timeline: timeline90Days,
   },
   {
